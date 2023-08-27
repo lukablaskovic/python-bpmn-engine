@@ -4,7 +4,7 @@ import random
 import sys
 
 
-m = BpmnModel("models/model_01.bpmn")
+m = BpmnModel("model_01.bpmn")
 NUM_INSTANCES = 2
 
 
@@ -13,7 +13,7 @@ async def get_workload():
 
 
 async def simulate_user(q):
-    WAIT = 0.01
+    WAIT = 1
 
     def auto(text):
         return ""
@@ -39,6 +39,7 @@ async def simulate_user(q):
     a = random.randint(1, 2)
     default = f"option={a}"
     data = ask(f"Form input: [{default}]")
+    
     q.put_nowait(UserFormMessage("t0", data if data != "" else default))
     await asyncio.sleep(WAIT)
 
@@ -85,6 +86,6 @@ def run_parallel():
     asyncio.run(parallel())
 
 
-# run_parallel()
+#run_parallel()
 run_serial()
 print("END")

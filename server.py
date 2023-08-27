@@ -33,7 +33,8 @@ async def run_as_server(app):
                 instance = await instance.run_from_log(data["events"])
                 asyncio.create_task(instance.run())
 
-
+# Get all models
+# Model.search
 @routes.get("/model")
 async def get_models(request):
     data = [m.to_json() for m in models.values()]
@@ -47,7 +48,7 @@ async def get_model(request):
         path=os.path.join("models", app["bpmn_models"][model_name].model_path)
     )
 
-
+# Creates new process instance
 @routes.post("/model/{model_name}/instance")
 async def handle_new_instance(request):
     _id = str(uuid4())
@@ -142,6 +143,15 @@ async def handle_instance_info(request):
 
     return web.json_response(instance)
 
+@routes.get("/events")
+async def get_all_events(request):
+    try:
+        events = db_connector.get_all_events()  
+        data = [event.to_dict() for event in events]
+        return web.json_response({"status": "ok", "results": data})
+    except Exception as e:
+        return web.json_response({"status": "error", "message": str(e)})
+
 
 app = None
 
@@ -177,3 +187,6 @@ async def serve():
 if __name__ == "__main__":
     app = run()
     web.run_app(app, port=9000)
+
+#conda activate python-bpmn-engine
+#python server.py

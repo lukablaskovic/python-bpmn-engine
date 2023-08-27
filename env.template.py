@@ -7,7 +7,8 @@ DB = {
     "database": "bpmn_praksa",
 }
 DS = {
-    "airtable": {"type": "http-connector", "url": "http://0.0.0.0:8082"},
+    "baserow": {"type": "http-connector", "url": "http://0.0.0.0:8080"},
     "notification": {"type": "http-connector", "url": "http://0.0.0.0:8081"},
     "pdf": {"type": "http-connector", "url": "http://0.0.0.0:8083"},
 }
+

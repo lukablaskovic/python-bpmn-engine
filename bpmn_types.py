@@ -231,10 +231,10 @@ class ServiceTask(Task):
         # system vars
         data = {**data, **env.SYSTEM_VARS}
 
-        url = os.path.join(
-            self.connector_fields["input_variables"].get("base_url", ""),
-            self.connector_fields["input_variables"]["url"].lstrip("/"),
-        )
+        base_url = self.connector_fields["input_variables"].get("base_url", "")
+        endpoint = self.connector_fields["input_variables"]["url"].lstrip("/")
+        url = f"{base_url}/{endpoint}"
+
 
         # Check method and make request
         if method := self.connector_fields["input_variables"].get("method"):
