@@ -13,7 +13,7 @@ class Event(DB.Entity):
     timestamp = Required(datetime, precision=6)
     pending = Required(StrArray)
     activity_variables = Required(Json)
-    
+
     def to_dict(self):
         return {
             "model_name": self.model_name,
@@ -21,9 +21,8 @@ class Event(DB.Entity):
             "activity_id": self.activity_id,
             "timestamp": self.timestamp.isoformat() if self.timestamp else None,
             "pending": self.pending,
-            "activity_variables": self.activity_variables
+            "activity_variables": self.activity_variables,
         }
-
 
 
 class RunningInstance(DB.Entity):
@@ -38,15 +37,18 @@ def setup_db():
         if env.DB["provider"] == "postgres":
             DB.bind(**env.DB)
         else:
-            DB.bind(provider="sqlite", filename="database/database.sqlite", create_db=True)
+            DB.bind(
+                provider="sqlite", filename="database/database.sqlite", create_db=True
+            )
         DB.generate_mapping(create_tables=True)
     except Exception as e:
         print(f"Error setting up the database: {e}")
 
 
-
 @db_session
-def add_event(model_name, instance_id, activity_id, timestamp, pending, activity_variables):
+def add_event(
+    model_name, instance_id, activity_id, timestamp, pending, activity_variables
+):
     try:
         Event(
             model_name=model_name,
@@ -62,6 +64,7 @@ def add_event(model_name, instance_id, activity_id, timestamp, pending, activity
         rollback()  # Reverting any changes due to the error
         return {"status": "error", "message": str(e)}
 
+
 @db_session
 def get_all_events():
     return select(e for e in Event)[:]
@@ -76,6 +79,7 @@ def add_running_instance(instance_id):
     except Exception as e:
         rollback()
         return {"status": "error", "message": str(e)}
+
 
 @db_session
 def finish_running_instance(instance):
@@ -93,6 +97,21 @@ def finish_running_instance(instance):
 
 
 @db_session
+def delete_instance(instance_id):
+    try:
+        instance_to_delete = RunningInstance.get(instance_id=instance_id)
+        if instance_to_delete:
+            instance_to_delete.delete()
+            commit()
+            return {"status": "success"}
+        else:
+            return {"status": "error", "message": "Instance not found"}
+    except Exception as e:
+        rollback()
+        return {"status": "error", "message": str(e)}
+
+
+@db_session
 def get_running_instances_log():
     try:
         log = []
@@ -100,9 +119,9 @@ def get_running_instances_log():
         for instance in running_instances:
             instance_dict = {}
             instance_dict[instance.instance_id] = {}
-            events = Event.select(lambda e: e.instance_id == instance.instance_id).order_by(
-                Event.timestamp
-            )[:]
+            events = Event.select(
+                lambda e: e.instance_id == instance.instance_id
+            ).order_by(Event.timestamp)[:]
             events_list = []
             for event in events:
                 model_path = event.model_name
@@ -118,7 +137,7 @@ def get_running_instances_log():
         return log
     except Exception as e:
         return {"status": "error", "message": str(e)}
-    
+
     """
     This script mainly handles database operations related to two entities, Event and RunningInstance, using Pony ORM. 
     It also provides a function to retrieve a log of running instances from the database.

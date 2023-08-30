@@ -33,6 +33,7 @@ async def run_as_server(app):
                 instance = await instance.run_from_log(data["events"])
                 asyncio.create_task(instance.run())
 
+
 # Get all models
 # Model.search
 @routes.get("/model")
@@ -47,6 +48,7 @@ async def get_model(request):
     return web.FileResponse(
         path=os.path.join("models", app["bpmn_models"][model_name].model_path)
     )
+
 
 # Creates new process instance
 @routes.post("/model/{model_name}/instance")
@@ -90,7 +92,7 @@ async def search_instance(request):
         return web.json_response({"error": "invalid_query"}, status=400)
 
     result_ids = []
-    for (att, value) in queries:
+    for att, value in queries:
         ids = []
         for m in models.values():
             for _id, instance in m.instances.items():
@@ -143,10 +145,25 @@ async def handle_instance_info(request):
 
     return web.json_response(instance)
 
+
+@routes.delete("/instance/{instance_id}")
+async def delete_instance(request):
+    instance_id = request.match_info.get("instance_id")
+    response = db_connector.delete_instance(instance_id)
+    if response["status"] == "success":
+        return web.json_response(
+            {"status": "ok", "message": "Instance deleted successfully."}
+        )
+    else:
+        return web.json_response(
+            {"status": "error", "message": response["message"]}, status=400
+        )
+
+
 @routes.get("/events")
 async def get_all_events(request):
     try:
-        events = db_connector.get_all_events()  
+        events = db_connector.get_all_events()
         data = [event.to_dict() for event in events]
         return web.json_response({"status": "ok", "results": data})
     except Exception as e:
@@ -188,5 +205,5 @@ if __name__ == "__main__":
     app = run()
     web.run_app(app, port=9000)
 
-#conda activate python-bpmn-engine
-#python server.py
+# conda activate python-bpmn-engine
+# python server.py
