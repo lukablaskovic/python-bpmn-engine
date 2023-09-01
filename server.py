@@ -1,5 +1,7 @@
 import aiohttp
 import os
+import sys
+
 from aiohttp import web
 from uuid import uuid4
 import asyncio
@@ -168,6 +170,31 @@ async def get_all_events(request):
         return web.json_response({"status": "ok", "results": data})
     except Exception as e:
         return web.json_response({"status": "error", "message": str(e)})
+
+
+@routes.get("/status")
+async def status_check(request):
+    """
+    Health check endpoint to monitor the status of the service.
+    Returns a 200 status code with a JSON payload if the service is running.
+    """
+    return web.json_response(
+        {
+            "microservice": "python-bpmn-engine",
+            "status": "✅ OK",
+            "message": "Service is running",
+        },
+        status=200,
+    )
+
+
+@routes.post("/restart")
+async def restart_server(request):
+    """
+    Handler to restart the server.
+    """
+    print("Restarting server...")
+    os.execv(sys.executable, ["python"] + sys.argv)
 
 
 app = None
