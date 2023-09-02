@@ -9,6 +9,8 @@ from bpmn_model import BpmnModel, UserFormMessage, get_model_for_instance
 import aiohttp_cors
 import db_connector
 from functools import reduce
+from datetime import datetime
+
 
 # Setup database
 db_connector.setup_db()
@@ -181,8 +183,9 @@ async def status_check(request):
     return web.json_response(
         {
             "microservice": "python-bpmn-engine",
-            "status": "✅ OK",
+            "status": "OK",
             "message": "Service is running",
+            "status_check_timestamp": datetime.now().isoformat(),
         },
         status=200,
     )
