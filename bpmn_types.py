@@ -235,7 +235,6 @@ class ServiceTask(Task):
         endpoint = self.connector_fields["input_variables"]["url"].lstrip("/")
         url = f"{base_url}/{endpoint}"
 
-
         # Check method and make request
         if method := self.connector_fields["input_variables"].get("method"):
             if method == "POST":
