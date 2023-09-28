@@ -235,4 +235,4 @@ if __name__ == "__main__":
     app = run()
     web.run_app(app, port=9000)
 
-# conda activate python-bpmn-engine && python server.py
+# conda activate python-bpmn-engine && npx nodemon server.py
