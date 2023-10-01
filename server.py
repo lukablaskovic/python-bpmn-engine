@@ -1,6 +1,8 @@
 import aiohttp
 import os
 import sys
+import bugsnag
+import env
 
 from aiohttp import web
 from uuid import uuid4
@@ -202,10 +204,28 @@ async def restart_server(request):
 
 app = None
 
+project_root = os.path.dirname(os.path.abspath(__file__))
+bugsnag.configure(
+    api_key=env.BUGSNAG["api_key"],
+    project_root=project_root,
+)
+
+
+async def bugsnag_middleware(app, handler):
+    async def middleware_handler(request):
+        try:
+            response = await handler(request)
+            return response
+        except Exception as e:
+            bugsnag.notify(e)
+            raise e
+
+    return middleware_handler
+
 
 def run():
     global app
-    app = web.Application()
+    app = web.Application(middlewares=[bugsnag_middleware])
     app.on_startup.append(run_as_server)
     app.add_routes(routes)
 
