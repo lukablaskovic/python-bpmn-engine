@@ -42,8 +42,32 @@ async def run_as_server(app):
 
 # Get all models
 # Model.search
+from types import SimpleNamespace
+
+
 @routes.get("/model")
 async def get_models(request):
+    models = {}
+    for file in os.listdir("models"):
+        if file.endswith(".bpmn"):
+            m = BpmnModel(file)
+            models[file] = m
+
+    running_instance_logs = db_connector.get_running_instances_log()
+
+    instance_to_model_mapping = {}
+    for log_entry in running_instance_logs:
+        for instance_id, details in log_entry.items():
+            instance_to_model_mapping[instance_id] = details
+
+    for model in models.values():
+        for instance_id, details in instance_to_model_mapping.items():
+            if details["model_path"] == model.model_path:
+                instance_object = SimpleNamespace(
+                    _id=instance_id, events=details["events"]
+                )
+                model.instances[instance_id] = instance_object
+
     data = [m.to_json() for m in models.values()]
     return web.json_response({"status": "ok", "results": data})
 
