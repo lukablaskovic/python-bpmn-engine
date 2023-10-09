@@ -12,3 +12,4 @@ database/
 env.py
 env.py
 env.py
+.env
