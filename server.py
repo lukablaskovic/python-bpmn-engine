@@ -217,15 +217,6 @@ async def status_check(request):
     )
 
 
-@routes.post("/restart")
-async def restart_server(request):
-    """
-    Handler to restart the server.
-    """
-    print("Restarting server...")
-    os.execv(sys.executable, ["python"] + sys.argv)
-
-
 app = None
 
 project_root = os.path.dirname(os.path.abspath(__file__))
