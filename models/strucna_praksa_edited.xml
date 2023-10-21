@@ -104,7 +104,7 @@ Napomena: Da biste prijavili preferencije, morate biti prijavljeni u aplikaciji!
           <camunda:inputParameter name="Treci_odabir">${Treci_odabir}</camunda:inputParameter>
           <camunda:inputParameter name="napomena">${napomena}</camunda:inputParameter>
           <camunda:inputParameter name="JMBAG">${JMBAG}</camunda:inputParameter>
-          <camunda:inputParameter name="_frontend_url" />
+          <camunda:inputParameter name="_frontend_url">${_frontend_url}</camunda:inputParameter>
           <camunda:outputParameter name="student_id" />
           <camunda:outputParameter name="id_alokacija" />
           <camunda:outputParameter name="id_preferencije" />
