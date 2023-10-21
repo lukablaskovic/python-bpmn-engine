@@ -221,7 +221,7 @@ app = None
 
 project_root = os.path.dirname(os.path.abspath(__file__))
 bugsnag.configure(
-    api_key=env.BPE_BUGSNAG["api_key"],
+    api_key=env.BUGSNAG["api_key"],
     project_root=project_root,
 )
 
