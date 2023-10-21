@@ -79,6 +79,7 @@ Napomena: Da biste prijavili preferencije, morate biti prijavljeni u aplikaciji!
           <camunda:formField id="Treci_odabir" label="Treci_odabir" type="string" />
           <camunda:formField id="napomena" label="Napomena" type="string" />
           <camunda:formField id="process_instance_id" type="string" />
+          <camunda:formField id="frontend_url" type="string" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_12zi41o</bpmn:incoming>
@@ -104,7 +105,6 @@ Napomena: Da biste prijavili preferencije, morate biti prijavljeni u aplikaciji!
           <camunda:inputParameter name="Treci_odabir">${Treci_odabir}</camunda:inputParameter>
           <camunda:inputParameter name="napomena">${napomena}</camunda:inputParameter>
           <camunda:inputParameter name="JMBAG">${JMBAG}</camunda:inputParameter>
-          <camunda:inputParameter name="_frontend_url">${_frontend_url}</camunda:inputParameter>
           <camunda:outputParameter name="student_id" />
           <camunda:outputParameter name="id_alokacija" />
           <camunda:outputParameter name="id_preferencije" />
@@ -215,7 +215,7 @@ Napomena: Da biste prijavili preferencije, morate biti prijavljeni u aplikaciji!
           <camunda:inputParameter name="student_email">${student_email}</camunda:inputParameter>
           <camunda:inputParameter name="Alocirani_zadatak">${Alocirani_zadatak}</camunda:inputParameter>
           <camunda:inputParameter name="id_instance" />
-          <camunda:inputParameter name="evaluacija_url">${_frontend_url}/${process_instance_id}</camunda:inputParameter>
+          <camunda:inputParameter name="evaluacija_url">${frontend_url}/${process_instance_id}</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_064rrii</bpmn:incoming>
