@@ -221,7 +221,7 @@ app = None
 
 project_root = os.path.dirname(os.path.abspath(__file__))
 bugsnag.configure(
-    api_key=env.BUGSNAG["api_key"],
+    api_key=env.BPE_BUGSNAG["api_key"],
     project_root=project_root,
 )
 
@@ -268,6 +268,6 @@ async def serve():
 
 if __name__ == "__main__":
     app = run()
-    web.run_app(app, port=9000)
+    web.run_app(app, port=os.getenv("PORT", 8080))
 
 # conda activate python-bpmn-engine && npx nodemon server.py
