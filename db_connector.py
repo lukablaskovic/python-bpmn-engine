@@ -115,7 +115,8 @@ def delete_instance(instance_id):
 def get_running_instances_log():
     try:
         log = []
-        running_instances = RunningInstance.select(lambda ri: ri.running == True)[:]
+        # running_instances = RunningInstance.select(lambda ri: ri.running == True)[:]
+        running_instances = RunningInstance.select()[:]
         for instance in running_instances:
             instance_dict = {}
             instance_dict[instance.instance_id] = {}

@@ -179,7 +179,7 @@ class BpmnInstance:
         return True
 
     async def run(self):
-
+        print("Running instance", self._id)
         self.state = "running"
         _id = self._id
         prefix = f"\t[{_id}]"
@@ -192,7 +192,6 @@ class BpmnInstance:
         queue = deque()
 
         while len(self.pending) > 0:
-
             # process incoming messages
             if not in_queue.empty():
                 queue.append(in_queue.get_nowait())
