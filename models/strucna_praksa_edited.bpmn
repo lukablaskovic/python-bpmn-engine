@@ -138,6 +138,7 @@ Napomena: Da biste prijavili preferencije, morate biti prijavljeni u aplikaciji!
           <camunda:inputParameter name="next_task">odabiranje_zadatka_student</camunda:inputParameter>
           <camunda:inputParameter name="id_instance" />
           <camunda:inputParameter name="poslodavac_naziv">${poslodavac_naziv}</camunda:inputParameter>
+          <camunda:inputParameter name="frontend_url">${frontend_url}</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1r5rnvg</bpmn:incoming>
@@ -187,6 +188,7 @@ Napomena: Da biste prijavili preferencije, morate biti prijavljeni u aplikaciji!
           <camunda:inputParameter name="poslodavac_email">${poslodavac_email}</camunda:inputParameter>
           <camunda:inputParameter name="Alocirani_zadatak">${Alocirani_zadatak}</camunda:inputParameter>
           <camunda:inputParameter name="opis_zadatka">${opis_zadatka}</camunda:inputParameter>
+          <camunda:inputParameter name="frontend_url">${frontend_url}</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0looqv9</bpmn:incoming>
@@ -261,6 +263,7 @@ Napomena: Da biste prijavili preferencije, morate biti prijavljeni u aplikaciji!
         <camunda:inputOutput>
           <camunda:inputParameter name="next_task">odabiranje_zadatka_student</camunda:inputParameter>
           <camunda:inputParameter name="id_instance" />
+          <camunda:inputParameter name="frontend_url">${frontend_url}</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_02synkt</bpmn:incoming>
