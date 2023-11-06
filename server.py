@@ -211,7 +211,7 @@ async def status_check(request):
             "microservice": "python-bpmn-engine",
             "status": "OK",
             "message": "Service is running",
-            "status_check_timestamp": datetime.now().isoformat(),
+            "status_check_timestamp": datetime.utcnow().isoformat(),
         },
         status=200,
     )
