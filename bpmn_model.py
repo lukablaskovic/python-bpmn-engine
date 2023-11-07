@@ -229,7 +229,7 @@ class BpmnInstance:
                         model_name=self.model.model_path,
                         instance_id=self._id,
                         activity_id=current._id,
-                        timestamp=datetime.utcnow(),
+                        timestamp=datetime.now(),
                         pending=[],
                         activity_variables={},
                     )
@@ -344,7 +344,7 @@ class BpmnInstance:
                     model_name=self.model.model_path,
                     instance_id=self._id,
                     activity_id=c,
-                    timestamp=datetime.utcnow(),
+                    timestamp=datetime.now(),
                     pending=[pending._id for pending in self.pending],
                     activity_variables=current_and_variables_dict[c],
                 )
