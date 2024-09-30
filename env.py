@@ -10,6 +10,7 @@ DB = {
     "password": os.getenv("POSTGRES_PASSWORD"),
     "host": os.getenv("POSTGRES_HOST"),
     "database": os.getenv("POSTGRES_DB_NAME"),
+    "port": os.getenv("POSTGRES_PORT"),
 }
 DS = {
     "baserow": {"type": "http-connector", "url": os.getenv("BASEROW_CONNECTOR_URL")},

@@ -2,6 +2,12 @@ from pony.orm import *
 from datetime import datetime
 import env
 import os
+import logging
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 DB = Database()
 
@@ -34,6 +40,7 @@ def setup_db():
     try:
         if not os.path.isdir("database"):
             os.mkdir("database")
+            logger.info("Created database directory")
         if env.DB["provider"] == "postgres":
             DB.bind(**env.DB)
         else:
@@ -41,8 +48,9 @@ def setup_db():
                 provider="sqlite", filename="database/database.sqlite", create_db=True
             )
         DB.generate_mapping(create_tables=True)
+        logger.info("Database setup completed")
     except Exception as e:
-        print(f"Error setting up the database: {e}")
+        logger.error(f"Error setting up the database: {e}")
 
 
 @db_session
@@ -59,14 +67,17 @@ def add_event(
             activity_variables=activity_variables,
         )
         commit()  # Explicitly committing the changes
+        logger.info(f"Event added for instance_id={instance_id}")
         return {"status": "success"}
     except Exception as e:
         rollback()  # Reverting any changes due to the error
+        logger.error(f"Error adding event for instance_id={instance_id}: {e}")
         return {"status": "error", "message": str(e)}
 
 
 @db_session
 def get_all_events():
+    logger.info("Fetching all events")
     return select(e for e in Event)[:]
 
 
@@ -75,9 +86,13 @@ def add_running_instance(instance_id):
     try:
         RunningInstance(instance_id=instance_id, running=True)
         commit()
+        logger.info(f"Running instance added with instance_id={instance_id}")
         return {"status": "success"}
     except Exception as e:
         rollback()
+        logger.error(
+            f"Error adding running instance with instance_id={instance_id}: {e}"
+        )
         return {"status": "error", "message": str(e)}
 
 
@@ -88,11 +103,14 @@ def finish_running_instance(instance):
         if finished_instance:
             finished_instance.running = False
             commit()
+            logger.info(f"Running instance finished with instance_id={instance}")
             return {"status": "success"}
         else:
+            logger.warning(f"Instance not found with instance_id={instance}")
             return {"status": "error", "message": "Instance not found"}
     except Exception as e:
         rollback()
+        logger.error(f"Error finishing instance with instance_id={instance}: {e}")
         return {"status": "error", "message": str(e)}
 
 
@@ -103,11 +121,16 @@ def delete_instance(instance_id):
         if instance_to_delete:
             instance_to_delete.delete()
             commit()
+            logger.info(f"Instance deleted with instance_id={instance_id}")
             return {"status": "success"}
         else:
+            logger.warning(
+                f"Instance not found for deletion with instance_id={instance_id}"
+            )
             return {"status": "error", "message": "Instance not found"}
     except Exception as e:
         rollback()
+        logger.error(f"Error deleting instance with instance_id={instance_id}: {e}")
         return {"status": "error", "message": str(e)}
 
 
@@ -115,7 +138,7 @@ def delete_instance(instance_id):
 def get_running_instances_log():
     try:
         log = []
-        # running_instances = RunningInstance.select(lambda ri: ri.running == True)[:]
+        logger.info("Fetching running instances log")
         running_instances = RunningInstance.select()[:]
         for instance in running_instances:
             instance_dict = {}
@@ -126,20 +149,18 @@ def get_running_instances_log():
             events_list = []
             for event in events:
                 model_path = event.model_name
-                event_dict = {}
-                event_dict["activity_id"] = event.activity_id
-                event_dict["pending"] = event.pending
-                event_dict["activity_variables"] = event.activity_variables
+                event_dict = {
+                    "activity_id": event.activity_id,
+                    "pending": event.pending,
+                    "activity_variables": event.activity_variables,
+                }
                 events_list.append(event_dict)
 
             instance_dict[instance.instance_id]["model_path"] = model_path
             instance_dict[instance.instance_id]["events"] = events_list
             log.append(instance_dict)
+        logger.info("Running instances log fetched")
         return log
     except Exception as e:
+        logger.error(f"Error fetching running instances log: {e}")
         return {"status": "error", "message": str(e)}
-
-    """
-    This script mainly handles database operations related to two entities, Event and RunningInstance, using Pony ORM. 
-    It also provides a function to retrieve a log of running instances from the database.
-    """
