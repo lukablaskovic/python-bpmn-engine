@@ -119,9 +119,16 @@ def delete_instance(instance_id):
     try:
         instance_to_delete = RunningInstance.get(instance_id=instance_id)
         if instance_to_delete:
+
+            Event.select(lambda e: e.instance_id == instance_id).delete()
+            commit()
+
             instance_to_delete.delete()
             commit()
-            logger.info(f"Instance deleted with instance_id={instance_id}")
+
+            logger.info(
+                f"Instance and related events deleted for instance_id={instance_id}"
+            )
             return {"status": "success"}
         else:
             logger.warning(
