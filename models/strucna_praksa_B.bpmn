@@ -16,6 +16,7 @@
         <bpmn:flowNodeRef>ispunjavanje_prijavnice_student</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_1865qr0</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>model_b_direktna_prijava_student</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0dri58t</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="profesor_lane" name="Profesor">
         <bpmn:flowNodeRef>spremanje_dnevnika</bpmn:flowNodeRef>
@@ -370,6 +371,7 @@ Prijavljene zadatke možete pregledati u tabu Zadaci.</bpmn:documentation>
       <bpmn:incoming>Flow_0jgnrnc</bpmn:incoming>
       <bpmn:outgoing>Flow_0gjgrzo</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:task id="Activity_0dri58t" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0ojchsi">
@@ -463,6 +465,9 @@ Prijavljene zadatke možete pregledati u tabu Zadaci.</bpmn:documentation>
       <bpmndi:BPMNShape id="Activity_11cml9m_di" bpmnElement="model_b_direktna_prijava_student">
         <dc:Bounds x="1110" y="310" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0dri58t_di" bpmnElement="Activity_0dri58t">
+        <dc:Bounds x="500" y="290" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1l8y47v_di" bpmnElement="Flow_1l8y47v">
         <di:waypoint x="1480" y="390" />
